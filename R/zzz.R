@@ -21,6 +21,8 @@
 #' it exists or it is set to FALSE.
 #' @param importPath the path to the import folder for loading information
 #' in BED (used only when feeding the database ==> default: NULL)
+#' @param extendedHeaders a named list with other HTTP headers.
+#' (for example: `extendedHeaders = list("X-Authorization" = "Bearer <token>")`)
 #' @param .opts a named list or CURLOptions object identifying the curl
 #' options for the handle (see [RCurl::curlPerform()]).
 #' (for example: `.opts = list(ssl.verifypeer = FALSE)`)
@@ -45,6 +47,7 @@ connectToBed <- function(
    url=NULL, username=NULL, password=NULL, connection=1,
    remember=FALSE, useCache=NA,
    importPath=NULL,
+   extendedHeaders = list(),
    .opts=list()
 ){
    stopifnot(
@@ -73,6 +76,10 @@ connectToBed <- function(
             connections[[connection]][["cache"]],
             useCache
          )
+         extendedHeaders <- c(
+            extendedHeaders,
+            connections[[connection]][["extendedHeaders"]]
+         )
          .opts <- c(
             .opts,
             connections[[connection]][[".opts"]]
@@ -90,6 +97,7 @@ connectToBed <- function(
       connections <- c(
          list(list(
             url=url, username=username, password=password, cache=useCache,
+            extendedHeaders,
             .opts=.opts
          )),
          connections
@@ -103,6 +111,7 @@ connectToBed <- function(
          username=username,
          password=password,
          importPath=importPath,
+         extendedHeaders=extendedHeaders,
          .opts=.opts
       ),
       bedEnv
@@ -115,6 +124,7 @@ connectToBed <- function(
             username=username,
             password=password,
             importPath=importPath,
+            extendedHeaders=extendedHeaders,
             .opts=.opts
          ),
          bedEnv

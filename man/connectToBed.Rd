@@ -12,6 +12,7 @@ connectToBed(
   remember = FALSE,
   useCache = NA,
   importPath = NULL,
+  extendedHeaders = list()
   .opts = list()
 )
 }
@@ -42,6 +43,9 @@ it exists or it is set to FALSE.}
 
 \item{importPath}{the path to the import folder for loading information
 in BED (used only when feeding the database ==> default: NULL)}
+
+\item{extendedHeaders}{a named list with other HTTP headers.
+(for example: \code{extendedHeaders = list("X-Authorization" = "Bearer <token>")})}
 
 \item{.opts}{a named list or CURLOptions object identifying the curl
 options for the handle (see \code{\link[RCurl:curlPerform]{RCurl::curlPerform()}}).
